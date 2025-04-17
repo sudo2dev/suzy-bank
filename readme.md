@@ -41,3 +41,6 @@ Projeto de um sistema bancário simples, implementado em **Python**, para fins d
    python tests.py
    ```
 
+---
+
+Disponível em: https://github.com/sudo2dev/suzy-bank
