@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as f:
+with open("readme.md", "r", encoding="utf-8") as f:
     page_description = f.read()
 
 with open("requirements.txt") as f:
@@ -14,7 +14,7 @@ setup(
     description="Suzy Bank Toy Project",
     long_description=page_description,
     long_description_content_type="text/markdown",
-    url="my_github_repository_project_link"
+    url="https://github.com/sudo2dev/suzy-bank",
     packages=find_packages(),
     install_requires=requirements,
     python_requires='>=3.8',

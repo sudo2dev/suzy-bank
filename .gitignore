@@ -1,3 +1,20 @@
-__pycache__
+#outros
 temp.*
 atividades
+
+# arquivos de build
+build/
+dist/
+*.egg-info/
+
+# cache do Python
+__pycache__/
+*.py[cod]
+
+# arquivos de testes temporários
+.pytest_cache/
+.tox/
+
+# ambiente virtual (se for criado localmente)
+.venv/
+env/
