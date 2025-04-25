@@ -2,7 +2,9 @@ import traceback
 from datetime import datetime
 from .dados_para_teste import *
 from .meu_assert import *
-#OLD VERSION!!! DEPRECATED! Teste para versão sem OO
+
+#OLD VERSION!!! DEPRECATED! Teste para versão 2, sem OO
+#nao foi atualizado os testes para a versão 3, OO
 
 
 def test_mesma_data():

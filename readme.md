@@ -64,33 +64,39 @@ https://github.com/sudo2dev/suzy-bank/tree/feature/v2
 
 ---
 
----
-
 ## 🧩 Funcionalidades - Versão 3
 
 - Versão orientada a objetos
 - Ainda não aplica algumas restrições, como qtd de sacas no dia ou total.
 
-🔗 Versão 3 disponível em:  
-https://github.com/sudo2dev/suzy-bank/tree/feature/v3
+🔗 Versão 4 disponível em:  
+https://github.com/sudo2dev/suzy-bank/tree/feature/v4
 
 ---
 
+## 🧩 Funcionalidades - Versão 4
+
+- Pacote do projeto publicado no pypi
+
 ## ▶️ Como executar
 
-1. Certifique-se de ter o **Python 3.10 ou superior** instalado.
+1. Certifique-se de ter o **Python 3.8 ou superior** instalado.
 2. Clone o repositório:
    ```bash
    git clone https://github.com/seu-usuario/suzy-bank.git
    cd suzy-bank
    ```
+3. Ou instale via pypi
+   ```bash
+   pip install suzy-bank
+```
 3. Execute o sistema:
    ```bash
    python suzy_bank.py
    ```
 4. Execute os testes:
    ```bash
-   python tests.py
+   python -m tests.tests
    ```
 
 ---
