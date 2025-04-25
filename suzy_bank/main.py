@@ -116,7 +116,8 @@ def listar_contas(bank):
 def carrega_dados(bank):
 	return novo_banco_com_transacoes()
 
-def main(carrega_dados_simulados = False):
+def main():
+	carrega_dados_simulados = False
 	mensagem = (
 		'[d] depositar\n'
 		'[s] sacar\n'
@@ -149,4 +150,4 @@ def main(carrega_dados_simulados = False):
 		print('===============\n')
 
 if __name__ == "__main__":
-	main(True)
+	main()

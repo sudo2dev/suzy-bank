@@ -92,10 +92,10 @@ https://github.com/sudo2dev/suzy-bank/tree/feature/v4
 ```
 3. Execute o sistema:
    ```bash
-   python suzy_bank.py
+   python -m suzy_bank.main
    ```
 4. Execute os testes:
-   ```bash
+```bash
    python -m tests.tests
    ```
 

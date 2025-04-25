@@ -8,7 +8,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="suzy-bank",
-    version="0.0.1",
+    version="0.0.6",
     author="sudo2dev",
     author_email="sudo2dev@gmail.com",
     description="Suzy Bank Toy Project",
@@ -18,4 +18,9 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     python_requires='>=3.8',
+    entry_points={
+        'console_scripts': [
+            'suzy_bank = suzy_bank.main:main',  # ajusta ao nome do módulo e função principal
+        ]
+    },
 )
