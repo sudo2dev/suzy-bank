@@ -64,6 +64,18 @@ https://github.com/sudo2dev/suzy-bank/tree/feature/v2
 
 ---
 
+---
+
+## 🧩 Funcionalidades - Versão 3
+
+- Versão orientada a objetos
+- Ainda não aplica algumas restrições, como qtd de sacas no dia ou total.
+
+🔗 Versão 3 disponível em:  
+https://github.com/sudo2dev/suzy-bank/tree/feature/v3
+
+---
+
 ## ▶️ Como executar
 
 1. Certifique-se de ter o **Python 3.10 ou superior** instalado.

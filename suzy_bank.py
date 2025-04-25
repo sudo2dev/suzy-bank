@@ -1,69 +1,77 @@
-import bank 
-import util 
+from core.bank import Bank 
+from util import util 
+from tests.dados_para_teste import novo_banco_com_transacoes
 from datetime import datetime
 
 def le_data(mensagem = 'digite a data ou <ENTER> para hj (dd-mm-aaaa)'):
 	data = input(mensagem)
 	return util.new_date(data)
 
-def informa_conta(contas):
-	no_conta = int(input('Informe no conta: '))
-	conta = bank.pesquisa_conta(contas, no_conta)
+def informa_cliente(bank):
+	cpf_cliente = input('Informe cpf do cliente: ')
+	cliente = bank.pesquisa_cliente(cpf_cliente)
+	if not cliente:
+		raise Exception('[ERRO] cliente nao cadastrado')
+	return cpf_cliente
+
+def informa_conta(bank, cpf_cliente=None):
+	no_conta = input('Informe no conta: ')
+	conta = bank.pesquisa_conta(no_conta, cpf_cliente)
 	if not conta:
 		raise Exception('[ERRO] conta invalida')
-	return conta 
+	return no_conta 
 
-def depositar(contas):
-	transacoes = None
+def depositar(bank):
+	# cliente, conta, data, valor
 	try:
-		conta = informa_conta(contas)
-		transacoes = conta['transacoes']
+		cpf = informa_cliente(bank)
+		no_conta = informa_conta(bank, cpf)
 		data = le_data()
-		valor = float(input('digite o valor do deposito: '))
-		bank.depositar(data, valor, transacoes)
+		valor = float ( input('digite o valor do deposito: ') or 0 )
+		saldo = bank.depositar(cpf, no_conta, data, valor)
+		print(saldo)
 	except Exception as e:
 		print(e)
 	finally:
-		saldo(transacoes=transacoes)
-		# return transacoes
+		# saldo(transacoes=transacoes)
+		pass
 
-def sacar(contas):
-	transacoes = None
+def sacar(bank):
 	try:
-		conta = informa_conta(contas)
-		transacoes = conta['transacoes']
+		cpf = informa_cliente(bank)
+		no_conta = informa_conta(bank, cpf)
 		data = le_data()
 		valor = float(input('digite o valor do saque: '))
-		transacoes = bank.sacar(data,valor,transacoes)
+		saldo = bank.sacar(cpf, no_conta, data, valor)
+		print(saldo)
 	except Exception as e:
 		print(e)
 	finally:
-		saldo(transacoes=transacoes)
+		pass
 
-def saldo(contas=None, transacoes=None):
+def saldo(bank):
 	try:
-		if not transacoes:
-			conta = informa_conta(contas)
-			transacoes = conta['transacoes']
-		saldo = bank.saldo(transacoes)
+		no_conta = informa_conta(bank)
+		saldo = bank.saldo(no_conta)
 		print(f'Saldo: R$ {saldo:.2f}')
 	except Exception as e:
 		print(e)
 
-def extrato(contas):
-
+def extrato(bank):
 	try:
-		conta = informa_conta(contas)
-		transacoes = conta['transacoes']
+		conta = informa_conta(bank)
+		transacoes = bank.extrato(conta)
+
 		if len(transacoes) == 0:
 			print("Conta sem movimentação")
 			return
 		print(f'data - hora\t\toperacao\tvalor\t\tsaldo')
+		saldo = 0
 		for t in transacoes:
-			data = t[0].strftime('%d-%m-%Y %H:%M')
-			valor = t[1]
-			opera = 'C' if valor > 0 else 'D'
-			saldo = t[2]
+			data = t.data.strftime('%d-%m-%Y %H:%M')
+			valor = t.valor
+			opera = t.nome
+			saldo += t.valor_com_sinal
 			print(f'{data}\t{opera}\t\tR$ {valor:11.2f}\tR$ {saldo:11.2f}')
 	except Exception as e:
 		print(e)
@@ -71,45 +79,42 @@ def extrato(contas):
 def sair():
 	print('bye.')
 
-def novo_usuario(usuarios):
+def novo_usuario(bank):
 	try:
 		print('*Novo Usuário*')
 		nome = input('Digite o nome: ')
 		data = le_data('Data de nascimento: ')
 		cpf  = input('Digite o cpf: ')
 		end  = input('Digite o endereco: ')
-		usr  = bank.novo_usuario(usuarios, nome=nome, nascimento=data, cpf=cpf, endereco=end)
+		usr  = bank.novo_cliente(nome=nome, nascimento=data, cpf=cpf, endereco=end)
 		print(usr)
 	except Exception as e:
 		print(e)
-	return usuarios
 
-def nova_conta(usuarios, contas):
+def nova_conta(bank):
 	cta = None
 	try:
 		print('*Nova Conta*')
 		cpf  = input('Digite o cpf do titular da conta: ')
-		cta  = bank.nova_conta(usuarios, contas, cpf_usuario=cpf)
+		cta  = bank.nova_conta(cpf_usuario=cpf)
 		print(cta)
 	except Exception as e:
 		print(e)
 
-def listar_usuarios(usuarios):
+def listar_usuarios(bank):
 	print('* Usuários *')
-	for c in usuarios:
-		print(c,usuarios[c])
+	for c in bank.clientes:
+		print(c,bank.clientes[c])
 
-def listar_contas(contas):
+def listar_contas(bank):
 	print('* Contas *')
-	for c in contas:
-		print(c,contas[c])
+	for cliente in bank.clientes.values():
+		print(cliente)
+		for conta in cliente.contas:
+			print('\t',conta)
 
-def carrega_dados(usuarios, contas):
-	usuarios['123'] = {'nome':"Joao", 'data_nascimento':datetime.today(), 'endereco':""}
-	usuarios['124'] = {'nome':"Joao", 'data_nascimento':datetime.now()  , 'endereco':""}
-	contas[1] = {'agencia': '0001', 'cpf_usuario':123, 'transacoes':[]}
-	contas[2] = {'agencia': '0001', 'cpf_usuario':124, 'transacoes':[]}
-	contas[3] = {'agencia': '0001', 'cpf_usuario':123, 'transacoes':[]}
+def carrega_dados(bank):
+	return novo_banco_com_transacoes()
 
 def main(carrega_dados_simulados = False):
 	mensagem = (
@@ -123,23 +128,22 @@ def main(carrega_dados_simulados = False):
 		'[lc] listar contas\n'
 		'[q] sair\n'
 	)
-	usuarios = {}
-	contas = {}
+	bank1 = Bank()
 	if (carrega_dados_simulados):
-		carrega_dados(usuarios, contas)
+		bank1 = carrega_dados(bank1)
 	opcao = None
 	while opcao != 'q':
 		opcao = input(mensagem)
 		print('===============\n')
 		match opcao:
-			case 'nu' : novo_usuario(usuarios)
-			case 'nc' : nova_conta(usuarios, contas)
-			case 'lu' : listar_usuarios(usuarios)
-			case 'lc' : listar_contas(contas)
-			case 'd' : depositar(contas)
-			case 's' : sacar(contas)
-			case 'e' : extrato(contas)
-			case 'b' : saldo(contas)
+			case 'nu' : novo_usuario(bank1)
+			case 'nc' : nova_conta(bank1)
+			case 'lu' : listar_usuarios(bank1)
+			case 'lc' : listar_contas(bank1)
+			case 'd' : depositar(bank1)
+			case 's' : sacar(bank1)
+			case 'e' : extrato(bank1)
+			case 'b' : saldo(bank1)
 			case 'q' : sair()
 			case _   : print('opcao inválida')
 		print('===============\n')
